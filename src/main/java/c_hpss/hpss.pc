@@ -1,0 +1,12 @@
+prefix=/opt/hpss/
+exec_prefix=${prefix}
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: libHPSS
+Description: HPSS Client Library for applications
+Version: 9.3.0.0.0
+Cflags: -I/usr/include/tirpc -I/opt/hpss/include -D_GNU_SOURCE -D_THREAD_SAFE -DLINUX -DHAVE_GETIFADDRS -Wl,--no-as-needed -ltirpc -pthread -fms-extensions -m64 -Wl,--no-as-needed -ltirpc -pthread -Wl,-rpath-link,${prefix}/lib -Wl,-rpath,/usr/lib64 -Wl,-rpath-link,${prefix}/db2/lib64 -Wl,-rpath=/opt/hpss/lib -DLITTLEEND
+Libs: -L${libdir} -lhpss -lhpsscs -lhpssclntlog
+
+

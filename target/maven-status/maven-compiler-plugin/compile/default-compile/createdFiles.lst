@@ -1,0 +1,12 @@
+tape/endit_hpss/Write/MonitoringW.class
+tape/endit_hpss/Read/ReadAFile.class
+Application/HPSS.class
+tape/endit_hpss/Read/MonitoringR.class
+Application/Utils.class
+tape/endit_hpss/Write/WriteAFile.class
+Application/Utils$2.class
+Application/HPSSFileInfo.class
+Application/App.class
+Application/Utils$1.class
+Application/Config.class
+Application/DictObject.class

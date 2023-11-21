@@ -1,0 +1,177 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>tape</groupId>
+  <artifactId>endit-hpss-aggregates</artifactId>
+  <version>3.1</version>
+  <packaging>jar</packaging>
+
+  <name>endit-hpss-aggregates</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <lib_name>libEnditHpss.so</lib_name>  
+  </properties>
+
+ 
+<dependencies>
+       
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>32.1.3-jre</version>
+        </dependency>
+             
+        <dependency>
+    		<groupId>com.google.code.gson</groupId>
+    		<artifactId>gson</artifactId>
+    		<version>2.10.1</version>
+		</dependency>
+
+		<dependency>
+    		<groupId>commons-io</groupId>
+    		<artifactId>commons-io</artifactId>
+    		<version>2.15.0</version>
+		</dependency>
+
+        <dependency>
+    		<groupId>ch.qos.logback</groupId>
+    		<artifactId>logback-classic</artifactId>
+    		 <version>1.2.11</version>
+		</dependency>
+   	
+    	<dependency>
+             <groupId>commons-codec</groupId>
+             <artifactId>commons-codec</artifactId>
+             <version>1.16.0</version>
+    	</dependency>
+    	
+    	<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+
+</dependencies>  
+    
+   <build>
+     <resources>
+            <resource>
+                <directory>resources/</directory>
+                <filtering>true</filtering>
+            </resource>
+     </resources>
+        
+     
+    <plugins>
+          <plugin>
+    	 <groupId>org.apache.maven.plugins</groupId>
+   		 <artifactId>maven-compiler-plugin</artifactId>
+    	 <version>3.8.0</version>
+    	 <configuration>
+        	<release>16</release>
+        	<compilerArgs>
+                 <arg>-h</arg>
+                 <arg>src/main/java/c_hpss</arg>
+                 </compilerArgs>
+    	 </configuration>
+	</plugin>
+		                
+   	<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-jar-plugin</artifactId>
+	<version>2.4</version>
+	<configuration>
+	  <archive>
+	    <manifest>
+		<addClasspath>true</addClasspath>
+		<mainClass>Application.App</mainClass>
+		<classpathPrefix>dependency-jars/</classpathPrefix>
+	    </manifest>
+	  </archive>
+	</configuration>
+  </plugin>
+  
+  <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-dependency-plugin</artifactId>
+	<executions>
+	  <execution>
+		<id>copy-dependencies</id>
+		<phase>package</phase>
+		<goals>
+		    <goal>copy-dependencies</goal>
+		</goals>
+		<configuration>
+		    <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
+		</configuration>
+	    </execution>
+	</executions>
+  </plugin>
+  
+        	<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <version>1.0-alpha-11</version>
+                <extensions>true</extensions>
+                <configuration>                                                        
+                    <environmentVariables>
+        	 			<environmentVariable>
+  		              		<LD_PRELOAD>${env.LD_PRELOAD}</LD_PRELOAD>
+     					</environmentVariable>
+     				</environmentVariables>                                    
+
+                    <sources>
+                        <source>
+                            <directory>src/main/java/c_hpss</directory>
+                            <includes>
+                    			<include>*.C</include>
+                    		</includes>
+                  			<excludes>
+        	            		<exclude>*.c</exclude>
+                   			</excludes>                            
+                        </source>                    
+            
+                    </sources>
+                    <compilerProvider>generic-classic</compilerProvider>
+                    <compilerExecutable>gcc</compilerExecutable>
+ 										
+                    <compilerStartOptions>
+                        <compilerStartOption>-L ${env.HPSS}/include</compilerStartOption>   
+                        <compilerStartOption>-c</compilerStartOption>          
+                        <compilerStartOption>-fPIC</compilerStartOption>
+                        <compilerStartOption>-Wall</compilerStartOption>
+                        <compilerStartOption>-m64</compilerStartOption>
+                        <compilerStartOption>-I ${env.JAVA_HOME}/include/</compilerStartOption>
+                        <compilerStartOption>-I ${env.JAVA_HOME}/include/linux/</compilerStartOption>                      
+                    </compilerStartOptions>
+                           
+                    <linkerOutputDirectory>target</linkerOutputDirectory>
+                    <linkerExecutable>gcc</linkerExecutable>        
+
+                    <linkerStartOptions>
+                    	<linkerStartOption>-L${env.HPSS}/lib</linkerStartOption>
+                        <linkerStartOption>-m64</linkerStartOption>
+                        <linkerStartOption>-shared</linkerStartOption>
+                        <linkerStartOption>${env.LD_PRELOAD}</linkerStartOption>
+                    </linkerStartOptions>
+ 
+                     <linkerFinalName>${lib_name}</linkerFinalName>
+ 
+                    <linkerEndOptions>
+                        <linkerEndOption>-o ${project.build.directory}/${lib_name}</linkerEndOption>
+                    </linkerEndOptions>
+                </configuration>
+ 
+          </plugin>
+      
+       </plugins>            
+       
+    </build>   
+ 
+ </project>
+
