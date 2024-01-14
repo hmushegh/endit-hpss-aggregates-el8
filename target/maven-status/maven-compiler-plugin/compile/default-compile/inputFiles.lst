@@ -1,0 +1,10 @@
+/root/endit-hpss-aggregates/src/main/java/Application/DictObject.java
+/root/endit-hpss-aggregates/src/main/java/Application/HPSS.java
+/root/endit-hpss-aggregates/src/main/java/Application/HPSSFileInfo.java
+/root/endit-hpss-aggregates/src/main/java/Application/Utils.java
+/root/endit-hpss-aggregates/src/main/java/Application/Config.java
+/root/endit-hpss-aggregates/src/main/java/tape/endit_hpss/Write/MonitoringW.java
+/root/endit-hpss-aggregates/src/main/java/tape/endit_hpss/Read/ReadAFile.java
+/root/endit-hpss-aggregates/src/main/java/tape/endit_hpss/Write/WriteAFile.java
+/root/endit-hpss-aggregates/src/main/java/tape/endit_hpss/Read/MonitoringR.java
+/root/endit-hpss-aggregates/src/main/java/Application/App.java

@@ -1,0 +1,123 @@
+<configuration debug="false">
+
+    <property name="HOME_LOG_APP_R" value="/var/log/endit-hpss-aggregates/appRead_aggr.log"/>
+    <property name="HOME_LOG_APP_W" value="/var/log/endit-hpss-aggregates/appWrite.log"/>
+    <property name="HOME_LOG_READ" value="/var/log/endit-hpss-aggregates/read_aggr.log"/>
+    <property name="HOME_LOG_WRITE" value="/var/log/endit-hpss-aggregates/writeLog.log"/>
+
+   <appender name="App.AppRead" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG_APP_R}</file>
+        
+       <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/endit-hpss-aggregates/appRead_aggr.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>30MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>30MB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+    
+     <appender name="App.AppWrite" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG_APP_W}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/endit-hpss-aggregates/appWrite.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>30MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>30MB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+    
+    
+     <appender name="Utils.UtilsR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG_READ}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/endit-hpss-aggregates/read_aggr.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>30MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>30MB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="Utils.UtilsW" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${HOME_LOG_WRITE}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/endit-hpss-aggregates/writeLog.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each archived file, size max 10MB -->
+            <maxFileSize>30MB</maxFileSize>
+            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <totalSizeCap>30MB</totalSizeCap>
+            <!-- 60 days to keep -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+    
+    <logger name = "Application.App.AppRead" level="debug" additivity="false">
+        <appender-ref ref="App.AppRead"/>
+    </logger>
+    
+    <logger name = "Application.App.AppWrite" level="debug" additivity="false">
+        <appender-ref ref="App.AppWrite"/>
+    </logger>
+    
+    <logger name = "Application.Utils.UtilsR" level="debug" additivity="false">
+        <appender-ref ref="Utils.UtilsR"/>
+    </logger>
+    
+    <logger name = "Application.Utils.UtilsW" level="debug" additivity="false">
+        <appender-ref ref="Utils.UtilsW"/>
+    </logger>
+       
+    <logger name = "tape.endit_hpss.Read.ReadAFile" level="debug" additivity="false">
+        <appender-ref ref="Utils.UtilsR"/>
+    </logger>
+    
+    <logger name = "tape.endit_hpss.Read.MonitoringR" level="debug" additivity="false">
+        <appender-ref ref="Utils.UtilsR"/>
+    </logger>
+    
+    
+     <logger name = "tape.endit_hpss.Write.WriteAFile" level="debug" additivity="false">
+        <appender-ref ref="Utils.UtilsW"/>
+    </logger>
+    
+    <logger name = "tape.endit_hpss.Write.MonitoringW" level="debug" additivity="false">
+        <appender-ref ref="Utils.UtilsW"/>
+    </logger>
+        
+
+    <root level="error">
+        <appender-ref ref="App.AppRead"/>
+        <appender-ref ref="App.AppWrite"/>
+        <appender-ref ref="Utils.UtilsR"/>
+        <appender-ref ref="Utils.UtilsW"/>
+    </root>
+    
+
+</configuration>

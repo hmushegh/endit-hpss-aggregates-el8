@@ -1,0 +1,38 @@
+[Unit]
+Description=endit-hpss-aggregates instance %I
+
+[Service]
+
+Environment='LD_PRELOAD=/lib64/libtirpc.so'
+Environment='HPSS=/opt/hpss'
+Environment='JAVA_HOME=/usr/lib/jvm/java-17-openjdk-17.0.7.0.7-1.el8_7.x86_64'
+Environment='ENDIT_JAVA_OPTS=-Xms800m -Xmx800m -XX:+UseParallelGC -XX:+UseCompressedOops -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log/endit-hpss-aggregates/java_heap.hprof -Djava.library.path=/usr/share/endit-hpss-aggregates/'
+Environment='ACTION=read'
+
+ExecStart=/bin/sh -c 'exec /usr/bin/java ${ENDIT_JAVA_OPTS} -jar /usr/share/endit-hpss-aggregates/endit-hpss-aggregates.jar ${ACTION} >> /var/log/endit-hpss-aggregates/sd_service.log 2>&1' %i
+ExecStop=/bin/kill -15 $MAINPID
+
+User=scc-dcache-0001
+Type=simple
+KillMode=process
+
+Restart=on-failure
+RestartSec=5s
+
+LimitAS=infinity
+LimitDATA=infinity
+LimitFSIZE=infinity
+LimitMEMLOCK=infinity
+LimitMSGQUEUE=infinity
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitSTACK=infinity
+
+LimitCORE=infinity
+LimitNICE=0
+LimitRTPRIO=0
+LimitSIGPENDING=767473
+
+[Install]
+WantedBy=multi-user.target
+
